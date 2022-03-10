@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
     try {
       this.beerService
         .getBeers()
-        .pipe(catchError(() => of([{ name: 'no beers' }])))
+        .pipe(catchError(() => of([{ name: 'my default data' }])))
         .subscribe((beers) => {
           console.log(beers);
           this.beers = beers;
