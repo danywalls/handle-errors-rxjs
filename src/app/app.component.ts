@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { of } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { BeerService } from './beer.service';
 
@@ -14,17 +14,19 @@ export class AppComponent implements OnInit {
   constructor(private beerService: BeerService) {}
 
   ngOnInit() {
-    try {
-      this.beerService
-        .getBeers()
-        .pipe(catchError(() => of([{ name: 'my default data' }])))
-        .subscribe((beers) => {
+    this.beerService
+      .getBeers()
+      .pipe(
+        catchError(() => {
+          return EMPTY;
+        })
+      )
+      .subscribe({
+        next: (beers) => {
           console.log(beers);
           this.beers = beers;
           this.title = beers[0].name;
-        });
-    } catch (err) {
-      this.title = 'Us a error';
-    }
+        },
+      });
   }
 }
